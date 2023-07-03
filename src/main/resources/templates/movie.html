@@ -218,7 +218,7 @@
 		<hr class="rounded my-5" style="margin-left: 10vw;">
 		<div class = "d-flex" style="margin-left: 10vw;"><h2>Recensioni </h2></div>
 		<div class="card px-2 my-5" th:if="${movie.reviews}"  th:each= " rev : ${movie.reviews}"  style="margin-left: 10vw; width: 81vw;">
-			<div class="d-flex d-flex mt-2 mb-3 "> 
+			<div class="d-flex d-flex mt-2"> 
 				<div><h3 class="me-5 " th:text="'Titolo: '+${rev.title}"> Titolo </h3></div>
 						<div class="d-inline-flex ms-5 mt-1">
 							<h5 class="me-1">Votazione: </h5>
@@ -228,7 +228,7 @@
 					 	<div class="d-flex ms-auto"> <a sec:authorize="hasAuthority('ADMIN')" type="button" class="btn-close" aria-label="Close" th:href="@{'/deleteReview/'+${movie.id}+'/'+${rev.reviewer.id}}"></a></div>
 				</div>			
 			
-			<div class="d-flex"><h6 class=" mt-2" th:text="'Autore: '+${rev.reviewer.name}+' ' + ${rev.reviewer.surname}"> autore</h6></div>
+			<div class="d-flex"><h6 class=" mb-4" th:text="'Autore: '+${rev.reviewer.name}+' ' + ${rev.reviewer.surname}"> autore</h6></div>
 			<div class="d-flex" ><h5 class=" mt-2" th:text="'Testo: '+${rev.text}"> testo recensione</h5></div>
 			</div>
 		</div>
