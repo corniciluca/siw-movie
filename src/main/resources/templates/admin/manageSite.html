@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="it">
+	<head th:replace="fragments/base.html :: headerfiles">
+</head>
+<body>
+    <div th:replace="fragments/base.html :: navbar"></div>
+		
+		<div class="d-flex flex-column py-5" style="max-width:81vw;margin-left:10%;">
+			
+			<div class="d-flex mb-1"><div class="d-flex"><h1>Artisti</h1></div>
+			<div class="mt-2 ms-4">
+				<button type="button" class="btn btn-primary" data-bs-toggle="modal"  data-bs-target="#newArtistModal">Aggiungi artista</button>
+				<a class="btn btn-primary" th:href="@{'/artists'}" role="button">Modifica</a>
+			</div></div>
+			
+			<div class="d-flex mb-5" th:if="${artists}">
+				<table class="table table-sm" style="table-layout: fixed">
+				  <thead class="table-dark">
+				      <th scope="col-sm-1">#</th>
+				      <th scope="col-sm-1">Nome</th>
+				      <th scope="col-sm-1">Cognome</th>
+				      <th scope="col-sm-1"></th>
+				  </thead>
+				  <tbody>
+					  <tr th:each = "artist,stat : ${artists}" >
+					      <th scope = "row" th:text="${stat.index}">1</th>
+					      <td th:text = "${artist.name}" >Mark</tdth>
+					      <td th:text = "${artist.surname}">Otto</td>
+					      <td>
+							  <div class="btn-group" role="group" aria-label="groupButtonArtists">
+								  <a class="btn btn-primary" th:href="@{'/admin/deleteArtist/'+${artist.id}}" role="button">Elimina</a>
+							  </div>
+						  </td>
+						 
+						  
+				      </tr>
+				  </tbody>
+				</table>
+
+			</div>
+			
+			
+			<div class="d-flex mb-1"><div class="d-flex"><h1>Film</h1></div>
+			<div class="mt-2 ms-4"><button type="button" class="btn btn-primary" data-bs-toggle="modal"  data-bs-target="#newFilmModal">Aggiungi film</button></div></div>
+			<div  class="d-flex" th:if="${movies}">
+				<table class="table table-sm" style="table-layout: fixed">
+				  <thead class="table-dark">
+			        <th scope="col-sm-1">#</th>
+      				<th scope="col-sm-1">Titolo</th>
+      				<th scope="col-sm-1">Anno</th>
+      				<th scope="col-sm-1"></th>
+
+				  </thead>
+				  <tbody>
+				     <tr th:each = "movie,stat : ${movies}" >
+					      <th scope = "row" th:text="${stat.index}">1</th>
+					      <td th:text = "${movie.title}" >Mark</tdth>
+					      <td th:text = "${movie.year}">Otto</td>
+					      <td>
+							  <div class="btn-group" role="group" aria-label="groupButtonMovies">
+								  <a class="btn btn-primary" th:href="@{'/movies/'+${movie.id}}" role="button">Modifica</a>
+								  <a class="btn btn-primary" th:href="@{'/admin/deleteMovie/'+${movie.id}}" role="button">Elimina</a>
+							  </div>
+						  </td>
+				      </tr>
+				  </tbody>
+				</table>
+				
+			</div>  
+		</div>
+		
+		<div class="modal fade" id="newArtistModal" tabindex="-1" aria-labelledby="newArtistLabel" aria-hidden="true">	
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+			  <form th:action="@{/admin/newArtist}" method="POST" th:object="${artist}" enctype="multipart/form-data">
+		      
+		      <div class="modal-header">
+		        <h1 class="modal-title fs-5" id="attoriLabel">Nuovo artista</h1>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		        
+				
+				<div class="mb-3">
+					<label class="form-label">Nome:</label> 
+					<span><input class="form-control" type="text" th:field="*{name}" required/></span>
+
+				</div>
+		
+				<div class="mb-3">
+					<label class="form-label">Cognome:</label> 
+					<span><input class="form-control" type="text" th:field="*{surname}" required /></span>
+
+				</div>
+				
+				<div class="mb-3">
+					<label class="form-label">Data nascita:</label> 
+					<span><input class="form-control" type="date" th:field="*{dateOfBirth}" required /></span>
+
+				</div>
+				
+				<div class="mb-3">
+					<label class="form-label">Data morte:</label> 
+					<span><input class="form-control" type="date" th:field="*{deathDate}" required/></span>
+
+				</div>
+		
+				<div class="mb-3">
+				  <label for="formFile" class="form-label">Immagine attore</label>
+				  <input class="form-control" type="file" id="formFile" name="image" required>
+				</div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="submit" class="btn btn-primary">Invia</button>
+		      </div>
+		      </form>
+		    </div>
+		  </div>
+		</div>
+		
+		<div class="modal fade" id="newFilmModal" tabindex="-1" aria-labelledby="newFilmLabel" aria-hidden="true">	
+				  <div class="modal-dialog">
+				    <div class="modal-content">
+					  <form th:action="@{/admin/newMovie}" method="POST" th:object="${movie}" enctype="multipart/form-data">
+				      <div class="modal-header">
+				        <h1 class="modal-title fs-5" id="attoriLabel">Nuovo film</h1>
+				        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				      </div>
+				      <div class="modal-body">
+						
+						<div class="mb-3">
+							<label class="form-label">Titolo:</label> 
+							<span><input class="form-control" type="text" th:field="*{title}" required/></span>
+
+						</div>
+				
+						<div class="mb-3">
+							<label class="form-label">Anno:</label> 
+							<span><input class="form-control" type="text" th:field="*{year}" required/></span>
+						    </span>
+						</div>
+						
+						<div class="mb-3">
+							<label class="form-label">Data:</label> 
+							<span><input class="form-control" type="date" th:field="*{date}" required/></span>
+
+						</div>
+				
+						<div class="mb-3">
+						  <label for="formFileMultiple" class="form-label">Immagini film</label>
+						  <input class="form-control" type="file" id="formFileMultiple" name="files" multiple required>
+						</div>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="submit" class="btn btn-primary">Invia</button>
+				      </div>
+				      </form>
+				    </div>
+				  </div>
+				</div>
+				
+		<div class = "alert-box">
+			<div th:if="${#fields.hasErrors('${artist.*}')}" th:each="err : ${#fields.errors('${artist.*}')}" class="alert alert-warning alert-dismissible fade show me-1 mb-1" role="alert">
+			  	<strong  th:text="${err}">Errore</strong>
+			  	<button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+			<div th:if="${#fields.hasErrors('${movie.*}')}" th:each="err : ${#fields.errors('${movie.*}')}" class="alert alert-warning alert-dismissible fade show me-1 mb-1" role="alert">
+			  	<strong  th:text="${err}">Errore</strong>
+			  	<button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		</div>
+		
+	</body>
+</html>

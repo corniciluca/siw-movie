@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	  <meta charset="utf-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+	  <title>Siw movie</title>
+	  <link rel="stylesheet" href="/css/stile.css"/>
+	  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+	  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+	  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	  <link href='https://fonts.googleapis.com/css?family=DM Sans' rel='stylesheet'>
+	  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+	  <script th:inline="javascript">
+		  function redirect(){
+			  var checkedValue = document.querySelector('.form-check-input:checked').value;
+			  var idMovie = /*[[${movie.id}]]*/ "";
+			  window.location.href="/setDirector/"+ idMovie +'/'+checkedValue;
+		  }
+	  </script>
+
+</head>
+
+<body>
+	
+	<div th:replace="fragments/base.html :: navbar"></div>
+		 <div class="d-flex row" style="margin-left: 10vw;">
+	    	<div class = "d-flex"><h1 th:text="${movie.title}" style="font-weight:bolder;"> Titolo Film </h1></div>
+	    	<div class = "d-flex"><h4 th:text="${movie.year}"> Anno </h4></div>
+	    	<hr class="rounded mb-3">
+		 </div>
+		<div class="d-flex justify-content-around">
+		    <div class="d-inline-flex" th:if="${movie}">
+				
+			    <div class="d-flex flex-column">
+			        <div class="d-flex flex-column" style="margin-top:23%;">
+						 <div class="d-flex">
+							 <h3><strong>Regista : </strong></h3>
+				        	 <span class="mt-2 mx-1" th:if="${movie.director}" th:text="${movie.director.name}+' '+${movie.director.surname}"  style="text-decoration: none;"><h5 class="mx-2 mt-2"> reg </h5></span>
+				        	 <h5 class="mx-2 mt-2" th:unless="${movie.director}"> Non inserito</h5>
+			        	
+			        	 <div class="d-flex mt-auto">
+					        <button sec:authorize="hasAuthority('ADMIN')"type="button" class="btn btn-primary" data-bs-toggle="modal"  data-bs-target="#registiModal">
+							  Modifica registra
+							</button>
+						</div>
+						</div>
+						<div class="d-flex mt-3">
+							<div class="d-flex ">
+								<h3><strong>Attori : </strong></h3>
+								<div th:if="${movie.actors}" class="actors_list mx-2">
+									<ul class="px-2 mt-2">
+										<li style="display: inline-block;" th:each="actor : ${movie.actors}">
+										  <span th:text="${actor.name}+' '+${actor.surname} ">attore </span>
+										</li>
+									</ul>
+								</div>	
+								
+								<div class="d-flex mt-auto mb-2 ms-2" sec:authorize="hasAuthority('ADMIN')">
+							        <button sec:authorize="isAuthenticated()" type="button" class="btn btn-primary" data-bs-toggle="modal"  data-bs-target="#aggAttoriModal">
+									  aggiungi
+									</button>
+									<button sec:authorize="isAuthenticated()" type="button" class="btn btn-primary" data-bs-toggle="modal"  data-bs-target="#attoriModal">
+									  rimuovi
+									</button>
+								</div>
+							</div>
+						</div>
+			        </div>
+			       <button sec:authorize="hasAuthority('ADMIN')" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#aggImmaginiModal">Cambia immagini</button>
+
+				</div>
+				
+				<div class="modal fade" th:id="aggImmaginiModal" tabindex="-1" th:aria-labelledby="aggImmaginiModal" aria-hidden="true">	
+					  <div class="modal-dialog">
+					    <div class="modal-content">
+							<form th:action="@{'/updateMovieImages/'+${movie.id}}" method="POST"  enctype="multipart/form-data">
+								<div class="mb-3">
+									  <label for="formFile" class="form-label">Immagine attore</label>
+									  <input class="form-control" type="file" id="formFileMultiple" name="files" multiple required>
+								</div>
+							    <div class="modal-footer">
+						        	<button type="submit" class="btn btn-primary">Invia</button>
+							    </div>
+							</form>
+					    </div>
+					  </div>
+					</div>
+				
+				<div class="modal fade" id="attoriModal" tabindex="-1" aria-labelledby="attoriLabel" aria-hidden="true">	
+				  <div class="modal-dialog">
+				    <div class="modal-content">
+					  <form th:action="@{'/removeActorsFromMovie/'+${movie.id}}" method="POST" th:object="${actorsToRemoveOrAdd}">
+				      <div class="modal-header">
+				        <h1 class="modal-title fs-5" id="attoriLabel">Attori</h1>
+				        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				      </div>
+				      <div class="modal-body">
+				        <ul class="list-group list-group-flush">
+						  
+							  <li class="list-group-item" th:each="actor: ${movie.actors}">
+								<input class="form-check-input me-1" type="checkbox" th:value="${actor.id}" th:id="'actCheckBox'+${actor.id}" th:field="${actorsToRemoveOrAdd.idArtisti}">
+	    						<label class="form-check-label stretched-link" th:for="'actCheckBox'+${actor.id}" th:text="${actor.name} +' '+ ${actor.surname}">Artista</label>
+							  </li>
+						 
+						</ul>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="submit" class="btn btn-primary">Rimuovi</button>
+				      </div>
+				      </form>
+				    </div>
+				  </div>
+				</div>
+				
+				<div class="modal fade" id="aggAttoriModal" tabindex="-1" aria-labelledby="aggAttoriLabel" aria-hidden="true">	
+				  <div class="modal-dialog">
+				    <div class="modal-content">
+					  <form th:action="@{'/addActorsToMovie/'+${movie.id}}" method="POST" th:object="${actorsToRemoveOrAdd}">
+				      <div class="modal-header">
+				        <h1 class="modal-title fs-5" id="aggAttoriLabel">Attori</h1>
+				        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				      </div>
+				      <div class="modal-body">
+				        <ul class="list-group list-group-flush">
+						  
+							  <li class="list-group-item" th:each="actor: ${actorsNotInTheMovie}">
+								<input class="form-check-input me-1" type="checkbox" th:value="${actor.id}" th:id="'aggActCheckBox'+${actor.id}" th:field="${actorsToRemoveOrAdd.idArtisti}">
+	    						<label class="form-check-label stretched-link" th:for="'aggActCheckBox'+${actor.id}" th:text="${actor.name} +' '+ ${actor.surname}">Artista</label>
+							  </li>
+						 
+						</ul>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="submit" class="btn btn-primary">Aggiungi</button>
+				      </div>
+				      </form>
+				    </div>
+				  </div>
+				</div>
+				
+				<div class="modal fade" id="registiModal" tabindex="-1" aria-labelledby="registiLabel" aria-hidden="true">
+				  <div class="modal-dialog">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h1 class="modal-title fs-5" id="registiLabel">Registi</h1>
+				        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				      </div>
+				      <div class="modal-body">
+				        <ul class="list-group list-group-flush">
+						  
+						  <li class="list-group-item" th:each="artist : ${artists}">
+						    <input class="form-check-input me-1" type="radio" name="listGroupRadio" th:value="${artist.id}" th:id="'checkBox'+${artist.id}" th:checked="${artist} == ${movie.director}">
+						    <label class="form-check-label stretched-link" th:for="'checkBox'+${artist.id}" th:text="${artist.name} +' '+ ${artist.surname}">Artista</label>
+						  </li>
+						 
+						</ul>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-primary" onclick="redirect()">Salva</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>				    
+		    </div>
+		
+			<div id="immaginiFilm" class="carousel slide d-inline-flex" style="margin-top: 10%;">
+				  <div class="carousel-inner" id="imageMovie">
+				    <div class="carousel-item active">
+				      <img th:src="@{'/images_upload/movies/'+${movie.urlImages[0]}}" class="d-block w-100" alt="...">
+				    </div>
+				    <div class="carousel-item"  th:each=" image : ${movie.urlImages}" th:if="${image} != ${movie.urlImages[0]}">
+				      <img th:src="@{'/images_upload/movies/'+${image}}" class="d-block w-100" alt="...">
+				    </div> 
+				  </div>
+				  
+				<button class="carousel-control-prev" type="button" data-bs-target="#immaginiFilm" data-bs-slide="prev">
+			    	<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			    	<span class="visually-hidden">Previous</span>
+				</button>
+				<button class="carousel-control-next" type="button" data-bs-target="#immaginiFilm" data-bs-slide="next">
+			    	<span class="carousel-control-next-icon" aria-hidden="true"></span>
+			    	<span class="visually-hidden">Next</span>
+				</button>
+			</div>
+		</div>
+		<div sec:authorize="isAuthenticated()">
+			<hr class="rounded my-5" style="margin-left: 10vw;">
+			<div class = "d-flex" style="margin-left: 10vw;"><h2>Scrivi recensione </h2></div>
+			<div class="d-flex" style="margin-left: 10vw;">
+		     <form th:action="@{'/addReviewToMovie/'+ ${movie.id}+'/'+${userData.name}+'_'+${userData.surname}}" method="POST" th:object="${review}">
+	          <div class="mb-3">
+	            <label for="titleReview" class="col-form-label" >Titolo:</label>
+	            <input type="text" class="form-control" id="titleReview" th:field="*{title}">
+	          </div>
+	          <div class="mb-3">
+	            <label for="textReview" class="col-form-label" >Testo:</label>
+	            <textarea class="form-control" id="textReview" th:field="*{text}" ></textarea>
+	          </div>
+	          <div class="mb-3">
+	            <label for="scoreReview" class="col-form-label">Votazione:</label>
+	            <div class=" btn-group" role="group" aria-label="buttonsVotazione">
+				  <input type="radio" class="btn-check" name="btnradio" id="btnradio1"  th:field="*{score}"  value= "1" autocomplete="off">
+				  <label class="btn btn-outline-primary" for="btnradio1">1</label>
+				  <input type="radio" class="btn-check" name="btnradio" id="btnradio2" th:field="*{score}"  value= "2" autocomplete="off">
+				  <label class="btn btn-outline-primary" for="btnradio2">2</label>
+				  <input type="radio" class="btn-check" name="btnradio" id="btnradio3" th:field="*{score}"  value= "3" autocomplete="off">
+				  <label class="btn btn-outline-primary" for="btnradio3">3</label>
+				  <input type="radio" class="btn-check" name="btnradio" id="btnradio4" th:field="*{score}"  value= "4" autocomplete="off">
+				  <label class="btn btn-outline-primary" for="btnradio4">4</label>
+				  <input type="radio" class="btn-check" name="btnradio" id="btnradio5" th:field="*{score}" value= "5" autocomplete="off">
+				  <label class="btn btn-outline-primary" for="btnradio5">5</label>
+				</div>
+	          </div>
+	          <button type="submit" class="btn btn-primary">Invia</button>
+	         </form>
+			</div>
+		</div>
+		<hr class="rounded my-5" style="margin-left: 10vw;">
+		<div class = "d-flex" style="margin-left: 10vw;"><h2>Recensioni </h2></div>
+		<div class="card px-2 my-5" th:if="${movie.reviews}"  th:each= " rev : ${movie.reviews}"  style="margin-left: 10vw; width: 81vw;">
+			<div class="d-flex d-flex mt-2 mb-3 "> 
+				<div><h3 class="me-5 " th:text="'Titolo: '+${rev.title}"> Titolo </h3></div>
+						<div class="d-inline-flex ms-5 mt-1">
+							<h5 class="me-1">Votazione: </h5>
+							<i th:each="i : ${#numbers.sequence(1, rev.score)}"
+			 				class="bi bi-star-fill rating-color"></i>
+						</div>
+					 	<div class="d-flex ms-auto"> <a sec:authorize="hasAuthority('ADMIN')" type="button" class="btn-close" aria-label="Close" th:href="@{'/deleteReview/'+${movie.id}+'/'+${rev.reviewer.id}}"></a></div>
+				</div>			
+			
+			<div class="d-flex"><h6 class=" mt-2" th:text="'Autore: '+${rev.reviewer.name}+' ' + ${rev.reviewer.surname}"> autore</h6></div>
+			<div class="d-flex" ><h5 class=" mt-2" th:text="'Testo: '+${rev.text}"> testo recensione</h5></div>
+			</div>
+		</div>
+		
+		<div class = "alert-box">
+			<div th:if="${#fields.hasErrors('${review.*}')}" th:each="err : ${#fields.errors('${review.*}')}" class="alert alert-warning alert-dismissible fade show me-1 mb-1" role="alert">
+			  	<strong  th:text="${err}">Errore</strong>
+			  	<button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		</div>
+				
+  </body>
+</html>

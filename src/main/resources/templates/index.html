@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="it">
+	<head th:replace="fragments/base.html :: headerfiles">
+</head>
+<body>
+    <div th:replace="fragments/base.html :: navbar"></div>
+		
+	<div>
+		<div class="row row-cols-1 row-cols-md-4 g-5 d-flex justify-content-center">
+		 
+		  <div class="col">
+			<a href="/movies" style="text-decoration:none">
+		    <div class="card h-100 card-with-anim">
+		      <img src="images/movieImage.jpg" class="card-img-top" alt="...">
+		      <div class="card-body">
+		        <h4 class="card-title"><center>Film</center></h4>
+		      </div>
+		    </div></a>
+		  </div>
+		 
+		  
+		  <div class="col">
+			<a href="/artists" style="text-decoration:none">
+		    <div class="card h-100 card-with-anim">
+		      <img src="images/actorImage.jpg" class="card-img-top" alt="...">
+		      <div class="card-body">
+		        <h4 class="card-title"><center>Artisti</center></h4>
+		      </div>
+		    </div>
+			</a>
+		  </div>
+		  
+		 
+		  <div class="col" sec:authorize="hasAuthority('ADMIN')">
+		   <a href="admin/manageSite" style="text-decoration:none">
+		    <div class="card h-100 card-with-anim">
+		      <img src="images/manageImage.jpg" class="card-img-top" alt="...">
+		      <div class="card-body">
+		        <h4 class="card-title"><center>Gestisci sito</center></h4>
+		      </div>
+		    </div>
+		    </a>
+		  </div>
+		  
+		</div>
+	</div>
+	
+	</body>
+</html>

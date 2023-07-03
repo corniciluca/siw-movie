@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head th:replace="fragments/base.html :: headerfiles">
+</head>
+<body>
+    <div th:replace="fragments/base.html :: navbar"></div>
+		
+	<div class="container" style="margin-bottom: 10%;">
+	<div class="row row-cols-auto g-5 justify-content-center">
+			 
+	  <div class="col"  th:each="artist : ${artists}">
+			<div class="card movie_card ">
+			  <img th:src="@{'/images_upload/artists/'+ ${artist.url_of_picture}}" class="card-img-top" alt="...">
+			  <div class="card-body ">
+			    <h5 class="card-title movie_title" th:text="${artist.name} + ' ' + ${artist.surname}">nome film</h5>
+			  		<div> 
+				   		<span th:text="'Nato il : '+${artist.dateOfBirth}">data nascita</span>
+				   		<div><span th:if="${artist.deathDate}" th:text="'Morto il : '+${artist.deathDate}"> data morte</span></div>
+			  		</div>
+			  		<div class="btn-group" role="group" aria-label="modificaLabel" sec:authorize="hasAuthority('ADMIN')">
+				  		<button  type="button" class="btn btn-primary" data-bs-toggle="modal"  th:data-bs-target="'#aggAttoriModal'+${artist.id}">Dati</button>
+				  		<button  type="button" class="btn btn-primary" data-bs-toggle="modal"  th:data-bs-target="'#aggImmagineModal'+${artist.id}">Immagine</button>
+			  		</div>	
+			  		
+			  		<div class="modal fade" th:id="'aggImmagineModal'+${artist.id}" tabindex="-1" th:aria-labelledby="'aggImmagineModal'+${artist.id}" aria-hidden="true">	
+					  <div class="modal-dialog">
+					    <div class="modal-content">
+							<form th:action="@{'/updateArtistImage/'+${artist.id}}" method="POST"  enctype="multipart/form-data">
+								<div class="mb-3">
+									  <label for="formFile" class="form-label">Immagine attore</label>
+									  <input class="form-control" type="file" id="formFile" name="image" required>
+								</div>
+							    <div class="modal-footer">
+						        	<button type="submit" class="btn btn-primary">Invia</button>
+							    </div>
+							</form>
+					    </div>
+					  </div>
+					</div>  
+				 		
+			 		<div class="modal fade" th:id="'aggAttoriModal'+${artist.id}" tabindex="-1" th:aria-labelledby="'aggAttoriLabel'+${artist.id}" aria-hidden="true">	
+					  <div class="modal-dialog">
+					    <div class="modal-content">
+						  <form th:action="@{'/updateArtist/'+${artist.id}}" method="POST" th:object="${artist}" enctype="multipart/form-data">
+					      
+					      <div class="modal-header">
+					        <h1 class="modal-title fs-5" id="attoriLabel">Modifica dati artista</h1>
+					        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					      </div>
+					      <div class="modal-body">
+							<div class="mb-3">
+								<label class="form-label">Nome:</label> 
+								<span><input class="form-control" type="text" th:placeholder="${artist.name}" th:field="${artist.name}" required/></span>
+							   
+							    </span>
+							</div>
+					
+							<div class="mb-3">
+								<label class="form-label">Cognome:</label> 
+								<span><input class="form-control" type="text" th:placeholder="${artist.surname}" th:field="${artist.surname}" required /></span>
+							    </span>
+							</div>
+							
+							<div class="mb-3">
+								<label class="form-label">Data nascita:</label> 
+								<span><input class="form-control" type="date" th:placeholder="${artist.dateOfBirth}" th:field="${artist.dateOfBirth}" required /></span>
+							    </span>
+							</div>
+							
+							<div class="mb-3">
+								<label class="form-label">Data morte:</label> 
+								<span><input class="form-control" type="date" th:placeholder="${artist.deathDate}" th:field="${artist.deathDate}" required/></span>
+							    </span>
+							</div>
+					
+					      </div>
+					      <div class="modal-footer">
+					        <button type="submit" class="btn btn-primary">Invia</button>
+					      </div>
+					      </form>
+					    </div>
+					  </div>
+					</div>
+			 
+			  </div>
+			</div>
+		</a>
+		</div>
+	</div>
+	<div class = "alert-box">
+			<div th:if="${#fields.hasErrors('${artist.*}')}" th:each="err : ${#fields.errors('${artist.*}')}" class="alert alert-warning alert-dismissible fade show me-1 mb-1" role="alert">
+			  	<strong  th:text="${err}">Errore</strong>
+			  	<button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		</div>
+</body>
+
+</html>

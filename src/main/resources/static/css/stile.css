@@ -1,0 +1,98 @@
+
+
+body { 
+    font-family: "DM Sans" !important;
+    padding-top: 10%;
+    background-color: #FFFAFA  !important;
+}
+
+a { 
+	text-decoration: none; 
+    color: darkgrey;
+}
+
+.card-with-anim{
+    border-radius: 4px;
+    background: #fff;
+    box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);
+    transition: .3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
+  	cursor: pointer;
+}
+
+.card-with-anim:hover{
+     transform: scale(1.05);
+  	 box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+}
+
+.movie_card{
+	padding: 0 !important;
+	width: 18rem;
+	margin:14px; 
+	border-radius: 10px;
+	box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.2), 0 4px 15px 0 rgba(0, 0, 0, 0.19);
+		}
+.movie_card img{
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	height: 24rem;
+}
+
+#imageMovie{
+	border-radius:10px;
+	box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.2), 0 4px 15px 0 rgba(0, 0, 0, 0.19);
+}
+
+.carousel-item img {  
+  object-fit: contain;
+  object-position: center;
+  overflow: hidden;
+  height:50vh;
+}
+
+.carousel-inner {
+  max-height: 400px !important;
+  max-width: 261px!important;
+}
+
+.movie_title {
+  white-space: nowrap; 
+  width: 265px; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+}
+
+.actors_list{
+  white-space: nowrap; 
+  width: 265px; 
+  overflow: auto;
+}
+
+.card-img-top{
+	height: 35vh;
+}
+
+
+hr.rounded{
+	border-top: 3px solid #505050;
+	width: 81vw;
+}
+
+.rating-color{
+    color:#fbc634 !important;
+}
+
+.toast{
+	color: orange;
+}
+
+table {
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+
+.alert-box{
+    position:fixed !important; 
+    bottom: 0px; 
+    right: 0px;
+}
