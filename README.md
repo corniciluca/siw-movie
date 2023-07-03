@@ -50,19 +50,19 @@ Progetto siw-movie per l'esame di SIW
 2. l'amministratore seleziona l'operazione di cancellazione film per un determinato film.
 3. Il sistema elimina il film e aggiorna i dati associati.
 
-   * **Caso d'uso UC10 : Cancellazione di un attore**  attore : _amministratore_
+* **Caso d'uso UC10 : Cancellazione di un attore**  attore : _amministratore_
 1. un amministratore seleziona la finestra per la gestione del sito.
 2. l'amministratore seleziona l'operazione di cancellazione attore per un determinato attore.
 3. Il sistema elimina l'attore e aggiorna i dati associati.
 
-   * **Caso d'uso UC11 : Inserimento nuovo attore**  attore : _amministratore_
+* **Caso d'uso UC11 : Inserimento nuovo attore**  attore : _amministratore_
 1. un amministratore seleziona la finestra per la gestione del sito.
 2. l'amministratore seleziona l'attività per l'aggiunta di un nuovo attore al sito.
 3. l'amministratore inserisce nome, cognome, data di nascita e di morte, se esiste, e un immagine dell'attore. Infine, l'amministratore conferma l'inserimento.
 4. I dati dell'attore sono corretti. Il sistema registra il nuovo attore.
 5. _I dati dell'attore non sono corretti. Il sistema termina l'operazione di inserimento attore e visualizza un messaggio d'errore._
 
-   * **Caso d'uso UC12 : Aggirnamento dei dati di un film**  attore : _amministratore_
+* **Caso d'uso UC12 : Aggirnamento dei dati di un film**  attore : _amministratore_
 1. un amministratore seleziona la finestra per visualizzazione di tutti i film e il sistema mostra tutti i film in catalogo.
 2. l'amministratore seleziona un determinato film e il sistema mostra tutti i dati di quel fil.
 3. l'amministratore seleziona il dato che vuole aggiornare, inserisce il nuovo e conferma l'aggiornamento
